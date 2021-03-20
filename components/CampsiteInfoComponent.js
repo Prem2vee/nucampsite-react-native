@@ -25,15 +25,15 @@ function RenderCampsite(props) {
 
     const view = React.createRef();
 
-    const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    const recognizeDrag = ({ dx }) => (dx < -200) ? true : false;
 
-    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
+    const recognizeComment = ({ dx }) => (dx > 200) ? true : false;
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderGrant: () => {
             view.current.rubberBand(1000)
-            .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
+                .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
         },
         onPanResponderEnd: (e, gestureState) => {
             console.log('pan responder end', gestureState);
@@ -65,11 +65,11 @@ function RenderCampsite(props) {
 
     if (campsite) {
         return (
-            <Animatable.View 
-                animation='fadeInDown' 
-                duration={2000} 
+            <Animatable.View
+                animation='fadeInDown'
+                duration={2000}
                 delay={1000}
-                ref={view} 
+                ref={view}
                 {...panResponder.panHandlers}>
                 <Card
                     featuredTitle={campsite.name}
@@ -149,7 +149,7 @@ class CampsiteInfo extends Component {
     }
 
     handleComment(campsiteId) {
-        this.props.postComment(campsiteId, this.state.text, this.state.rating, this.state.author);
+        this.props.postComment(campsiteId, this.state.author, this.state.rating, this.state.text);
         this.toggleModal();
     }
 
@@ -216,7 +216,7 @@ class CampsiteInfo extends Component {
                                 title='Submit'
                                 color='#5637DD'
                                 onPress={() => {
-                                    this.toggleModal();
+                                    this.handleComment(campsiteId);
                                     this.resetForm();
                                 }}
                             />
